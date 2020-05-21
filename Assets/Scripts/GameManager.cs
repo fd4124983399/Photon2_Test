@@ -14,6 +14,8 @@ namespace Com.ABCDE.MyApp
 
         public static GameManager Instance;
 
+        static GameObject cube;
+
         private void Awake()
         {
             Instance = this;
@@ -28,11 +30,10 @@ namespace Com.ABCDE.MyApp
             }
             else
             {
-                PhotonNetwork.Instantiate(this.playerPrefab.name,
+                cube = PhotonNetwork.Instantiate(this.playerPrefab.name,
                     new Vector3(0f, 0f, 260f), Quaternion.identity, 0);
             }
         }
-
 
         // 玩家離開遊戲室時, 把他帶回到遊戲場入口
         public override void OnLeftRoom()
@@ -73,6 +74,11 @@ namespace Com.ABCDE.MyApp
             }
             Debug.LogFormat("載入{0}人的場景",
                 PhotonNetwork.CurrentRoom.PlayerCount);
+
+            if (cube != null)
+            {
+                PhotonNetwork.Destroy(cube);
+            }
             PhotonNetwork.LoadLevel("Room");
         }
     }
